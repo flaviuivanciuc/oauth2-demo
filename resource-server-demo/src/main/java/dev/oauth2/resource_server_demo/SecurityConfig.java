@@ -10,17 +10,31 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
+    private final MultiIssuerJwtDecoder jwtDecoder;
+    private final DynamicRolesConverter dynamicRolesConverter;
+
+    public SecurityConfig(MultiIssuerJwtDecoder jwtDecoder) {
+        this.jwtDecoder = jwtDecoder;
+        this.dynamicRolesConverter = new DynamicRolesConverter(jwtDecoder);
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(dynamicRolesConverter);
+
+        return http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, "/api/private").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
-                .oauth2ResourceServer(oauth2 -> oauth2.jwt(
-                        jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())
-                ));
-        return http.build();
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(jwt -> jwt
+                                .decoder(jwtDecoder)
+                                .jwtAuthenticationConverter(jwtAuthenticationConverter())
+                        )
+                )
+                .build();
     }
 
     @Bean

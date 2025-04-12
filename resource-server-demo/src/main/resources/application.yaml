@@ -3,6 +3,12 @@ spring:
     oauth2:
       resource-server:
         jwt:
-          issuer-uri: ${AUTH0_ISSUER_URI}
+          issuers:
+            auth0:
+              issuer-uri: ${AUTH0_ISSUER_URI}
+              roles-claim: ${AUTH0_ROLES_CLAIM}
+            okta:
+              issuer-uri: ${OKTA_ISSUER_URI}
+              roles-claim: ${OKTA_ROLES_CLAIM}
 server:
   port: 8081
