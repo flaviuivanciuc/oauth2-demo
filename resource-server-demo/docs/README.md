@@ -1,8 +1,8 @@
-# OAuth2 Resource Server Demo Documentation
+# 🛡️ OAuth2 Resource Server Demo Documentation
 
-This project demonstrates a Spring Boot application implementing OAuth2 resource server functionality using Auth0 as the identity provider.
+This project demonstrates a Spring Boot application implementing OAuth2 resource server functionality supporting multiple identity providers (Auth0 and Okta).
 
-## Table of Contents
+## 📚 Table of Contents
 
 1. [Overview](overview.md)
 2. [Getting Started](getting-started.md)
@@ -10,14 +10,14 @@ This project demonstrates a Spring Boot application implementing OAuth2 resource
 4. [API Reference](api-reference.md)
 5. [Configuration Guide](configuration.md)
 
-## Quick Start
+## ⚡ Quick Start
 
-1. Ensure you have Java 21 installed
-2. Configure your Auth0 issuer URI in `application.yaml`
-3. Run the application using: `./mvnw spring-boot:run`
-4. Access the API at: `http://localhost:8081`
+1. ☕ Ensure you have Java 21 installed
+2. ⚙️ Configure Auth0 and Okta issuer URIs in `application.yaml`
+3. 🚀 Run the application using: `./mvnw spring-boot:run`
+4. 🌐 Access the API at: `http://localhost:8081`
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 src/
@@ -27,7 +27,11 @@ src/
 │   │       ├── ResourceServerDemoApplication.java
 │   │       ├── ApiController.java
 │   │       ├── SecurityConfig.java
-│   │       └── Auth0RoleConverter.java
+│   │       ├── MultiTenantRoleConverter.java
+│   │       ├── MultiIssuerJwtDecoder.java
+│   │       ├── JwtUtils.java
+│   │       ├── JwtIssuerProperties.java
+│   │       └── AppConfig.java
 │   └── resources/
 │       └── application.yaml
 ```

@@ -1,74 +1,85 @@
-# Authentication Flow
+# Authentication Flow 🔄
 
-## Overview
+## Overview 🎯
 
-This application implements JWT token validation for OAuth2 resource server using Auth0 as the identity provider.
+This application implements JWT token validation for OAuth2 resource server supporting multiple identity providers (Auth0 and Okta).
 
-## Flow Diagram
+## Flow Diagram 📊
 
 ```mermaid
 sequenceDiagram
     participant Client
     participant Resource Server
     participant Auth0
+    participant Okta
 
-    Client->>Resource Server: API Request + Bearer Token
-    Resource Server->>Auth0: Validate JWT
-    Auth0-->>Resource Server: Token Valid/Invalid
+    alt Auth0 Token
+        Client->>Resource Server: API Request + Auth0 Bearer Token
+        Resource Server->>Auth0: Validate JWT
+        Auth0-->>Resource Server: Token Valid/Invalid
+    else Okta Token
+        Client->>Resource Server: API Request + Okta Bearer Token
+        Resource Server->>Okta: Validate JWT
+        Okta-->>Resource Server: Token Valid/Invalid
+    end
+
     Resource Server->>Resource Server: Extract Claims & Roles
+    Note right of Resource Server: Convert provider-specific<br/>role claims
     Resource Server-->>Client: Protected Resource/401/403
 ```
 
-## Detailed Flow Steps
+## Detailed Flow Steps 📝
 
-1. **Token Validation**
+1. **Token Validation** 🔍
 
-   - Client sends request with Bearer token
-   - Resource server validates JWT signature and claims
-   - Checks token expiration and issuer
-   - Validates audience claim
+   - Client sends request with Bearer token 🎫
+   - MultiIssuerJwtDecoder identifies token issuer 🔍
+   - Resource server validates JWT signature and claims ✅
+   - Checks token expiration and issuer ⏱️
+   - Validates audience claim 🎯
 
-2. **Role Processing**
+2. **Role Processing** 👥
 
-   - Extract custom role claims from JWT
-   - Convert Auth0 roles to Spring authorities
-   - Apply role-based access control
+   - MultiTenantRoleConverter extracts role claims 📄
+   - Handles different role claim formats per provider 🔄
+   - Converts provider roles to Spring authorities 🛡️
+   - Apply role-based access control ⚔️
 
-3. **Request Processing**
+3. **Request Processing** 🔄
 
-   - Validate required headers (X-User-Email)
-   - Check endpoint-specific permissions
-   - Process the request if authorized
+   - Validate required headers (X-User-Email) 📧
+   - Check endpoint-specific permissions 🔒
+   - Process the request if authorized ✅
 
-4. **Response Handling**
-   - Return protected resource for authorized requests
-   - Return 401 for invalid/expired tokens
-   - Return 403 for insufficient permissions
+4. **Response Handling** 📤
+   - Return protected resource for authorized requests ✅
+   - Return 401 for invalid/expired tokens ❌
+   - Return 403 for insufficient permissions 🚫
 
-## Implementation Details
+## Implementation Details 📋
 
-### JWT Validation
+### JWT Validation 🔐
 
 The application validates:
 
-- Token signature using Auth0's public key
-- Token expiration
-- Token issuer
-- Required claims
+- Token signature using Auth0's public key 🔑
+- Token expiration ⏱️
+- Token issuer 🏢
+- Required claims 📝
 
-### Role-Based Security
+### Role-Based Security 👥
 
 Implemented through:
 
-- Custom Auth0RoleConverter
-- Role-specific endpoint protection
-- Spring Security configuration
+- Custom MultiTenantRoleConverter 🔄
+- Role-specific endpoint protection 🛡️
+- Spring Security configuration ⚙️
 
-### Error Handling
+### Error Handling ⚠️
 
 Common scenarios:
 
-- Invalid token format
-- Expired tokens
-- Missing required roles
-- Missing required headers
+- Invalid token format ❌
+- Expired tokens ⏱️
+- Missing required roles 🚫
+- Missing required headers 📝

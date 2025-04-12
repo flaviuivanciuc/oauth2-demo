@@ -1,46 +1,46 @@
-# API Reference
+# API Reference 📚
 
-## Endpoints
+## Endpoints 🛣️
 
-### Public Endpoints
+### Public Endpoints 🌐
 
-#### GET /
+#### GET / 🏠
 
 - **Description**: Home page
 - **Access**: Public
 - **Response**: Home page with login option or user information if authenticated
 - **Template**: `home.html`
 
-### Protected Endpoints
+### Protected Endpoints 🔒
 
-#### GET /secured
+#### GET /secured 🔐
 
 - **Description**: Protected page
 - **Access**: Authenticated users only
 - **Response**: Secured page with user information
 - **Template**: `secured.html`
 
-#### GET /call-api
+#### GET /call-api 📡
 
 - **Description**: Makes authenticated call to external API
 - **Access**: Authenticated users only
 - **Headers**:
-  - `Authorization`: Bearer token
-  - `X-User-Email`: User's email
+  - `Authorization`: Bearer token 🔑
+  - `X-User-Email`: User's email 📧
 - **Target**: `http://localhost:8081/api/private`
 - **Response**: API response displayed on secured page
 
-## Authentication
+## Authentication 🔐
 
 All protected endpoints require:
 
-- Valid session
-- OAuth2 authentication via Auth0
-- Valid access token for API calls
+- Valid session 📝
+- OAuth2 authentication via Auth0 or Okta 🔒
+- Valid access token for API calls 🎫
 
-## Request/Response Examples
+## Request/Response Examples 📝
 
-### Successful Authentication Response
+### Successful Authentication Response ✅
 
 ```json
 {
@@ -49,7 +49,7 @@ All protected endpoints require:
 }
 ```
 
-### API Call Response
+### API Call Response 📡
 
 ```json
 {
@@ -58,13 +58,13 @@ All protected endpoints require:
 }
 ```
 
-## Error Handling
+## Error Handling ⚠️
 
-- Unauthorized access redirects to login page
-- API errors are handled gracefully and displayed on the secured page
-- Invalid tokens result in session termination
+- Unauthorized access redirects to login page 🔄
+- API errors are handled gracefully and displayed on the secured page ❌
+- Invalid tokens result in session termination 🚫
 
-## Rate Limiting
+## Rate Limiting 🚦
 
-- Dependent on Auth0 and external API limitations
-- No internal rate limiting implemented
+- Dependent on Auth0 and external API limitations ⏱️
+- No internal rate limiting implemented 📊

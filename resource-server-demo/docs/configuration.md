@@ -1,8 +1,8 @@
-# Configuration Guide
+# Configuration Guide ⚙️
 
-## Application Configuration
+## Application Configuration 🛠️
 
-### application.yaml Settings
+### application.yaml Settings 📝
 
 ```yaml
 spring:
@@ -10,80 +10,86 @@ spring:
     oauth2:
       resource-server:
         jwt:
-          issuer-uri: YOUR_AUTH0_DOMAIN
+          issuers:
+            auth0:
+              issuer-uri: ${AUTH0_ISSUER_URI}
+              roles-claim: ${AUTH0_ROLES_CLAIM}
+            okta:
+              issuer-uri: ${OKTA_ISSUER_URI}
+              roles-claim: ${OKTA_ROLES_CLAIM}
 server:
   port: 8081
 ```
 
-## Security Configuration
+## Security Configuration 🔒
 
-### SecurityConfig.java
+### SecurityConfig.java 🛡️
 
 Key configuration points:
 
-- JWT authentication
-- Role-based authorization
-- Endpoint security rules
-- Custom JWT converter
+- Multi-issuer JWT authentication 🔑
+- Role-based authorization 👥
+- Endpoint security rules ⚔️
+- Custom JWT decoder and converter 🔄
 
 Example security rules:
 
 ```java
 http.authorizeHttpRequests(auth -> auth
-    .requestMatchers(HttpMethod.GET, "/api/private").hasRole("ADMIN")
+    .requestMatchers(HttpMethod.GET, "/api/private").hasAnyRole("ADMIN", "user")
     .anyRequest().authenticated()
 )
 ```
 
-## Role Conversion
+## Role Conversion 🔄
 
-The `Auth0RoleConverter` class handles:
+The `MultiTenantRoleConverter` handles:
 
-- Custom role claim extraction
-- Role to authority conversion
-- Auth0-specific claim format handling
+- Custom role claim extraction per issuer 📎
+- Role to authority conversion 🔄
+- Support for different claim formats 📋
 
-## API Endpoints
+## JWT Configuration 🎫
 
-Protected endpoints require:
+### MultiIssuerJwtDecoder 🔍
 
-- Valid JWT token
-- Proper role assignments
-- Required headers
+Handles:
 
-## Logging Configuration
+- Multiple issuer validation ✅
+- JWT signature verification 🔏
+- Issuer-specific configurations ⚙️
 
-Add to application.yaml for detailed security logs:
+## Environment Variables 🌍
 
-```yaml
-logging:
-  level:
-    org.springframework.security: DEBUG
-    org.springframework.security.oauth2: DEBUG
-```
+Required variables:
 
-## Production Considerations
+- AUTH0_ISSUER_URI 🔑
+- AUTH0_ROLES_CLAIM 👥
+- OKTA_ISSUER_URI 🔑
+- OKTA_ROLES_CLAIM 👥
 
-1. **Security**
+## Production Considerations 🚀
 
-   - Enable HTTPS
-   - Configure proper CORS
-   - Set up rate limiting
-   - Implement audit logging
+1. **Security** 🔒
 
-2. **Performance**
+   - Enable HTTPS 🔐
+   - Configure proper CORS ⚡
+   - Set up rate limiting 🚦
+   - Implement audit logging 📝
 
-   - Configure connection pools
-   - Enable caching where appropriate
-   - Monitor token validation performance
+2. **Performance** ⚡
 
-3. **Monitoring**
+   - Configure connection pools 🌊
+   - Enable caching where appropriate 💾
+   - Monitor token validation performance 📊
 
-   - Set up health endpoints
-   - Configure metrics collection
-   - Implement proper logging
+3. **Monitoring** 📈
 
-4. **Environment Configuration**
-   - Use profiles for different environments
-   - Secure sensitive configuration
-   - Configure proper timeouts
+   - Set up health endpoints 💓
+   - Configure metrics collection 📊
+   - Implement proper logging 📝
+
+4. **Environment Configuration** ⚙️
+   - Use profiles for different environments 🌍
+   - Secure sensitive configuration 🔐
+   - Configure proper timeouts ⏱️

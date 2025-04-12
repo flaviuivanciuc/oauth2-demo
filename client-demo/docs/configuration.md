@@ -1,8 +1,8 @@
-# Configuration Guide
+# Configuration Guide ⚙️
 
-## Application Configuration
+## Application Configuration 🛠️
 
-### application.yaml Settings
+### application.yaml Settings 📝
 
 ```yaml
 spring:
@@ -17,33 +17,43 @@ spring:
               - openid
               - profile
               - email
+          okta:
+            client-id: ${OKTA_CLIENT_ID}
+            client-secret: ${OKTA_CLIENT_SECRET}
+            scope:
+              - openid
+              - profile
+              - email
+              - groups
         provider:
           auth0:
             issuer-uri: ${AUTH0_ISSUER_URI}
-
-server:
-  port: 8080
+          okta:
+            issuer-uri: ${OKTA_ISSUER_URI}
 ```
 
-## Environment Variables
+## Environment Variables 🌍
 
-Required environment variables:
+Required variables:
 
-- `AUTH0_CLIENT_ID`: Your Auth0 application client ID
-- `AUTH0_CLIENT_SECRET`: Your Auth0 application client secret
-- `AUTH0_ISSUER_URI`: Your Auth0 domain (e.g., https://your-tenant.auth0.com)
+- AUTH0_CLIENT_ID 🆔
+- AUTH0_CLIENT_SECRET 🔑
+- AUTH0_ISSUER_URI 🏢
+- OKTA_CLIENT_ID 🆔
+- OKTA_CLIENT_SECRET 🔑
+- OKTA_ISSUER_URI 🏢
 
-## Security Configuration
+## Security Configuration 🔒
 
-### SecurityConfig.java
+### SecurityConfig.java 🛡️
 
 Key configuration points:
 
-- OAuth2 login enabled
-- CSRF protection
-- Session management
-- Authorization rules
-- Logout handling
+- OAuth2 login enabled 🔐
+- CSRF protection 🛡️
+- Session management ⏱️
+- Authorization rules ⚔️
+- Logout handling 🚪
 
 Example security rules:
 
@@ -54,20 +64,20 @@ http.authorizeHttpRequests(authorize -> authorize
 )
 ```
 
-## Template Configuration
+## Template Configuration 🎨
 
-### Templates Location
+### Templates Location 📂
 
-- Templates are stored in `src/main/resources/templates/`
-- Using Thymeleaf template engine
-- Security context available in templates
+- Templates are stored in `src/main/resources/templates/` 📁
+- Using Thymeleaf template engine 🎨
+- Security context available in templates 🔒
 
-### Available Templates
+### Available Templates 📄
 
-1. `home.html`: Public landing page
-2. `secured.html`: Protected page showing user info
+1. `home.html`: Public landing page 🏠
+2. `secured.html`: Protected page showing user info 🔐
 
-## External API Integration
+## External API Integration 🔌
 
 Configure the external API URL in application.yaml:
 
@@ -76,38 +86,27 @@ api:
   url: http://localhost:8081
 ```
 
-## Logging Configuration
+## Production Considerations 🚀
 
-Add to application.yaml for detailed OAuth2 logs:
+1. **SSL Configuration** 🔒
 
-```yaml
-logging:
-  level:
-    org.springframework.security: DEBUG
-    org.springframework.security.oauth2: DEBUG
-```
+   - Enable HTTPS in production 🔐
+   - Configure SSL certificate 📜
+   - Set secure cookie flags 🍪
 
-## Production Considerations
+2. **Session Management** ⏱️
 
-1. **SSL Configuration**
+   - Configure session timeout ⌛
+   - Set session persistence 💾
+   - Enable session cleanup 🧹
 
-   - Enable HTTPS in production
-   - Configure SSL certificate
-   - Set secure cookie flags
+3. **Security Headers** 🛡️
 
-2. **Session Management**
+   - HSTS configuration 🔒
+   - XSS protection 🛡️
+   - Content Security Policy 🔐
 
-   - Configure session timeout
-   - Set session persistence
-   - Enable session cleanup
-
-3. **Security Headers**
-
-   - HSTS configuration
-   - XSS protection
-   - Content Security Policy
-
-4. **Environmental Specifics**
-   - Use different application-{profile}.yaml files
-   - Secure credentials storage
-   - Configure proper CORS settings
+4. **Environmental Specifics** 🌍
+   - Use different application-{profile}.yaml files 📄
+   - Secure credentials storage 🔑
+   - Configure proper CORS settings ⚡
