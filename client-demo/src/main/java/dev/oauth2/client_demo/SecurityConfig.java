@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class SecurityConfig {
 
-    private static final String CUSTOM_AUDIENCE = "https://resource-server-demo-api-v1";
+    private static final String AUTH0_AUDIENCE = "https://resource-server-demo-api-v1";
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, ClientRegistrationRepository repo) throws Exception {
@@ -35,7 +35,7 @@ public class SecurityConfig {
                 new DefaultOAuth2AuthorizationRequestResolver(repo, "/oauth2/authorization");
 
         defaultResolver.setAuthorizationRequestCustomizer(customizer ->
-                customizer.additionalParameters(params -> params.put("audience", CUSTOM_AUDIENCE))
+                customizer.additionalParameters(params -> params.put("audience", AUTH0_AUDIENCE))
         );
 
         return defaultResolver;

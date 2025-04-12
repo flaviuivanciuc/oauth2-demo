@@ -10,9 +10,23 @@ spring:
               - openid
               - profile
               - email
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
+          okta:
+            client-id: ${OKTA_CLIENT_ID}
+            client-secret: ${OKTA_CLIENT_SECRET}
+            scope:
+              - openid
+              - profile
+              - email
+              - groups
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            authorization-grant-type: authorization_code
         provider:
           auth0:
             issuer-uri: ${AUTH0_ISSUER_URI}
+          okta:
+            issuer-uri: ${OKTA_ISSUER_URI}
   thymeleaf:
     cache: false
 server:
