@@ -1,0 +1,8 @@
+spring:
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: ${AUTH0_ISSUER_URI}
+server:
+  port: 8081

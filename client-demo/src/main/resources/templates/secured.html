@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Secured Page</title></head>
+<body>
+<h1>Secured Page</h1>
+<p>Only accessible when logged in.</p>
+<p>Hello again, <span th:text="${name}"></span>!</p>
+<p th:if="${apiResponse}">API says: <span th:text="${apiResponse}"></span></p>
+<a href="/">Back Home</a>
+</body>
+</html>

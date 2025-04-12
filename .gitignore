@@ -1,0 +1,41 @@
+.DS_Store
+.vscode
+
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# Maven specific
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# IDEs and editors
+.idea/
+*.iws
+*.iml
+*.ipr
+.project
+.classpath
+.settings/
+.factorypath
+
+# Spring Boot specific
+.springBeans
+.sts4-cache/
+
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs
+hs_err_pid*
+replay_pid*

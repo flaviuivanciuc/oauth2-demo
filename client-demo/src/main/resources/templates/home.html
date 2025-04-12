@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head><title>Home</title></head>
+<body>
+<h1>Welcome</h1>
+<div th:if="${name}">
+    <p>Hello, <span th:text="${name}"></span>!</p>
+    <p>Email: <span th:text="${email}"></span></p>
+    <a href="/secured">Go to secured page</a> | <a href="/logout">Logout</a>
+    <a href="/call-api">Call secured API</a>
+</div>
+<div th:unless="${name}">
+    <a href="/oauth2/authorization/auth0?audience=https://resource-server-demo-api-v1">Login with Auth0</a>
+</div>
+</body>
+</html>
