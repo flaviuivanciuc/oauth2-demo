@@ -19,7 +19,7 @@ public class MultiTenantRoleConverter implements Converter<Jwt, Collection<Grant
 
     @Autowired
     public MultiTenantRoleConverter(JwtIssuerProperties jwtIssuerProperties) {
-        this.issuerRolesClaimMap = jwtIssuerProperties.getIssuers().entrySet().stream()
+        this.issuerRolesClaimMap = jwtIssuerProperties.issuers().entrySet().stream()
                 .collect(Collectors.toMap(
                         entry -> entry.getValue().issuerUri(),
                         entry -> entry.getValue().rolesClaim()

@@ -13,7 +13,7 @@ public class MultiIssuerJwtDecoder implements JwtDecoder {
     private final Map<String, String> rolesClaimMap = new HashMap<>();
 
     public MultiIssuerJwtDecoder(JwtIssuerProperties jwtIssuerProperties) {
-        jwtIssuerProperties.getIssuers().forEach((key, issuer) -> {
+        jwtIssuerProperties.issuers().forEach((key, issuer) -> {
             JwtDecoder decoder = JwtDecoders.fromIssuerLocation(issuer.issuerUri());
             ((NimbusJwtDecoder) decoder).setJwtValidator(JwtValidators.createDefaultWithIssuer(issuer.issuerUri()));
 
