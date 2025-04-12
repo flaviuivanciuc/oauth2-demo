@@ -11,21 +11,18 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final MultiIssuerJwtDecoder jwtDecoder;
-    private final DynamicRolesConverter dynamicRolesConverter;
+    private final MultiTenantRoleConverter multiTenantRoleConverter;
 
-    public SecurityConfig(MultiIssuerJwtDecoder jwtDecoder) {
+    public SecurityConfig(MultiIssuerJwtDecoder jwtDecoder, MultiTenantRoleConverter multiTenantRoleConverter) {
         this.jwtDecoder = jwtDecoder;
-        this.dynamicRolesConverter = new DynamicRolesConverter(jwtDecoder);
+        this.multiTenantRoleConverter = multiTenantRoleConverter;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-        converter.setJwtGrantedAuthoritiesConverter(dynamicRolesConverter);
-
         return http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.GET, "/api/private").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/private").hasAnyRole("ADMIN", "user")
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
@@ -40,7 +37,7 @@ public class SecurityConfig {
     @Bean
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
-        converter.setJwtGrantedAuthoritiesConverter(new Auth0RoleConverter());
+        converter.setJwtGrantedAuthoritiesConverter(multiTenantRoleConverter);
         return converter;
     }
 }

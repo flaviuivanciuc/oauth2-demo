@@ -10,18 +10,16 @@ import java.util.Map;
 public class MultiIssuerJwtDecoder implements JwtDecoder {
 
     private final Map<String, JwtDecoder> jwtDecoders = new HashMap<>();
-    private final Map<String, String> rolesClaim = new HashMap<>();
+    private final Map<String, String> rolesClaimMap = new HashMap<>();
 
     public MultiIssuerJwtDecoder(JwtIssuerProperties jwtIssuerProperties) {
-        for (Map.Entry<String, JwtIssuerProperties.Issuer> entry : jwtIssuerProperties.getIssuers().entrySet()) {
-            JwtIssuerProperties.Issuer issuer = entry.getValue();
+        jwtIssuerProperties.getIssuers().forEach((key, issuer) -> {
+            JwtDecoder decoder = JwtDecoders.fromIssuerLocation(issuer.issuerUri());
+            ((NimbusJwtDecoder) decoder).setJwtValidator(JwtValidators.createDefaultWithIssuer(issuer.issuerUri()));
 
-            NimbusJwtDecoder jwtDecoder = NimbusJwtDecoder.withJwkSetUri(issuer.issuerUri() + ".well-known/jwks.json").build();
-            jwtDecoder.setJwtValidator(JwtValidators.createDefaultWithIssuer(issuer.issuerUri()));
-
-            jwtDecoders.put(issuer.issuerUri(), jwtDecoder);
-            rolesClaim.put(issuer.issuerUri(), issuer.rolesClaim());
-        }
+            jwtDecoders.put(issuer.issuerUri(), decoder);
+            rolesClaimMap.put(issuer.issuerUri(), issuer.rolesClaim());
+        });
     }
 
     @Override
@@ -35,6 +33,6 @@ public class MultiIssuerJwtDecoder implements JwtDecoder {
     }
 
     public String getRolesClaim(String issuer) {
-        return rolesClaim.get(issuer);
+        return rolesClaimMap.get(issuer);
     }
 }

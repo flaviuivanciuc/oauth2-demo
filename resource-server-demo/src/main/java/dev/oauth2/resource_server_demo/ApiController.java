@@ -15,7 +15,7 @@ import java.util.Map;
 public class ApiController {
 
     @GetMapping("/private")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAnyRole('ADMIN', 'user)")
     public Map<String, String> securedEndpoint(@AuthenticationPrincipal Jwt jwt, @RequestHeader("X-User-Email") String email) {
         return Map.of(
                 "message", "Hello, " + email + "! This is a protected API."
