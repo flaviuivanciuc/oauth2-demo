@@ -1,3 +1,6 @@
+server:
+  port: 8081
+
 spring:
   security:
     oauth2:
@@ -10,5 +13,8 @@ spring:
             okta:
               issuer-uri: ${OKTA_ISSUER_URI}
               roles-claim: ${OKTA_ROLES_CLAIM}
-server:
-  port: 8081
+
+service:
+  api-keys:
+    service-a: ${SERVICE_A_API_KEY}
+    service-b: ${SERVICE_B_API_KEY}
